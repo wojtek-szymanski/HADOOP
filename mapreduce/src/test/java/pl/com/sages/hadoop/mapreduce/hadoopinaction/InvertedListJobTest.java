@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static pl.com.sages.hadoop.mapreduce.hadoopinaction.InvertedListJob.INPUT_FORMAT_CLASS;
 
 public class InvertedListJobTest {
 
@@ -34,6 +34,7 @@ public class InvertedListJobTest {
         inputPath = inputFolder.getRoot().getAbsolutePath();
         outputPath = outputFolder.getRoot().getAbsolutePath();
         configuration = new Configuration();
+        configuration.set(INPUT_FORMAT_CLASS, KeyValueTextInputFormatWithHeader.class.getName());
         fileSystem = FileSystem.get(configuration);
 
         FileUtils.copyInputStreamToFile(getClass().getResourceAsStream("/cite75_99_input.txt"), inputFolder.newFile());
@@ -43,7 +44,8 @@ public class InvertedListJobTest {
     @Test
     public void shouldInvertWords() throws Exception {
         //when
-        int exitCode = new InvertedListJob(configuration).run(new String[]{inputPath, outputPath});
+        InvertedListJob job = new InvertedListJob(configuration);
+        int exitCode = job.run(new String[]{inputPath, outputPath});
 
         //then
         assertThat(exitCode).isEqualTo(0);

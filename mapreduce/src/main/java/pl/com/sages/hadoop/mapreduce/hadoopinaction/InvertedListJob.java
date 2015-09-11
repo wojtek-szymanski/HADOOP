@@ -4,13 +4,17 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.InputFormat;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 public class InvertedListJob extends Configured implements Tool {
+
+    static final String INPUT_FORMAT_CLASS = "input.format.class";
 
     public InvertedListJob() {
     }
@@ -30,7 +34,7 @@ public class InvertedListJob extends Configured implements Tool {
         FileOutputFormat.setOutputPath(job, out);
         job.setMapperClass(InvertedListMapper.class);
         job.setReducerClass(InvertedListReducer.class);
-        job.setInputFormatClass(KeyValueTextInputFormatWithHeader.class);
+        job.setInputFormatClass(inputFormatClass());
         // job.setOutputFormatClass(TextOutputFormat.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
@@ -40,5 +44,11 @@ public class InvertedListJob extends Configured implements Tool {
     public static void main(String[] args) throws Exception {
         int res = ToolRunner.run(new InvertedListJob(), args);
         System.exit(res);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Class<? extends InputFormat> inputFormatClass() throws ClassNotFoundException {
+        String inputFormatClass = getConf().get(INPUT_FORMAT_CLASS);
+        return inputFormatClass != null ? (Class<? extends InputFormat>) Class.forName(inputFormatClass) : KeyValueTextInputFormat.class;
     }
 }
