@@ -22,8 +22,6 @@ public class JoinJobTest {
     @Rule
     public TemporaryFolder inputFolder = new TemporaryFolder();
     @Rule
-    public TemporaryFolder orderFolder = new TemporaryFolder();
-    @Rule
     public TemporaryFolder outputFolder = new TemporaryFolder();
 
     private String inputPath;
