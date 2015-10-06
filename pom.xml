@@ -33,7 +33,7 @@
 
     <properties>
         <!-- dependency versions -->
-        <hadoop.version>2.6.0</hadoop.version>
+        <hadoop.version>2.7.1</hadoop.version>
         <avro.version>1.7.7</avro.version>
         <hive.version>0.14.0</hive.version>
         <pig.version>0.14.0</pig.version>
@@ -43,7 +43,7 @@
         <mrunit.version>1.1.0</mrunit.version>
         <junit.version>4.10</junit.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <!-- Java 7 -->
+        <!-- Java 8 -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- UTF-8 -->
@@ -74,6 +74,11 @@
             <dependency>
                 <groupId>org.apache.hadoop</groupId>
                 <artifactId>hadoop-mapreduce-client-core</artifactId>
+                <version>${hadoop.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-datajoin</artifactId>
                 <version>${hadoop.version}</version>
             </dependency>
             <!-- Avro -->
